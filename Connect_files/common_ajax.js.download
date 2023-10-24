@@ -1,0 +1,27 @@
+//EmployeeList populate
+$(document).ready(function() {
+    $("#departmentId").on('change', function() {
+    	var departmentId = $(this).val();
+		$.ajax({
+       		type: 'GET',
+       		url: siteurl+'dept-employees',
+       		data: {"AJAXRequest":true, "department_id":departmentId},
+       		success: function (data) {
+       			if(document.myform.employee_id != undefined){
+    				  document.myform.employee_id.options.length = 0;
+    					addOption(document.myform.employee_id, '-- Select Employee --', '');
+    			}
+          		if(data.length > 0){
+               		var data = AjaxOutputToArray(data);
+               		var id = "";
+               		var value = "";
+          			for(var i=0; i<data.length; i++){
+          				id = data[i][0];
+          				value = data[i][1].replace(/&nbsp;/gi,' ');
+          				addOption(document.myform.employee_id, value, id);
+          			}
+           		}
+       		}
+       	});
+    });
+});

@@ -1,0 +1,77 @@
+let hasColorPickerRun = false;
+
+/**
+ *
+ * @param {Boolean} [autoClose=false] - Should the color picker close after selecting a color?
+ * @param {Array} [colors] - Custom color colors to use. Enter an array of hex codes
+ * @constructor
+ */
+function ColorPicker(
+    colors=[
+        "red" , "green" , "yellow"
+    ]
+    ) {
+    autoClose=true
+    if (!hasColorPickerRun) {
+        hasColorPickerRun = true;
+        let colorPickerCount = document.querySelectorAll('.color-picker-trigger');
+
+        for (let id = 0; id < colorPickerCount.length; id++) {
+
+            let output
+            let container
+
+            // colors = props?.colors ?? this.colors
+
+            document.querySelectorAll('.color-picker-trigger').item(id)
+            document.querySelectorAll('.color-picker-trigger').item(id).addEventListener('click', togglePopup)
+            output = document.querySelectorAll('.color-picker-output').item(id)
+
+            // create popup element
+            container = document.createElement("div")
+            container.classList.add('color-picker-element')
+            container.setAttribute('style', 'display: none;')
+            output.after(container)
+
+            // add colors to popup
+            let swatchContainer = document.createElement('div')
+            swatchContainer.classList.add('color-picker-colors')
+            container.appendChild(swatchContainer)
+
+            for (const swatch of colors) {
+                let colorButton = document.createElement('div')
+                colorButton.setAttribute('data-color-picker-color', swatch)
+                colorButton.style.backgroundColor = swatch
+                colorButton.classList.add('color-picker-color-button')
+                colorButton.addEventListener('click', selectColor)
+                swatchContainer.appendChild(colorButton)
+
+            }
+
+            function selectColor(e) {
+                let input = document.querySelectorAll('.color-picker-output').item(id)
+                let newColor = e.target.getAttribute('data-color-picker-color')
+                input.setAttribute('value', newColor)
+                input.setAttribute('data-color-picker-color', newColor)
+                input.setAttribute('style', 'background-color: ' + newColor + '; color: ' + newColor + ';')
+                if (autoClose) {
+                    togglePopup()
+                }
+            }
+
+            function togglePopup() {
+                let el = document.querySelectorAll('.color-picker-element').item(id)
+
+                let display = (window.getComputedStyle ? getComputedStyle(el, null) : el.currentStyle).display
+                if ('none' === display) {
+                    el.style.display = 'block'
+                } else {
+                    el.style.display = 'none'
+                }
+            }
+        }
+    } else {
+        console.info('You only need to call color-picker once per page');
+    }
+}
+

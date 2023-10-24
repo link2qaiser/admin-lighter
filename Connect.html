@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<!-- saved from url=(0036) -->
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+	<script>
+		encodedData = "";
+	</script>
+	<!-- Title !-->
+	<title>Admin Light</title>
+	<!-- Icon !-->
+	<link rel="SHORTCUT ICON" type="text/css" href="./Connect_files/connect.ico">
+	<!-- Meta Tags -->
+	<meta http-equiv="CACHE-CONTROL" content="NO-CACHE">
+	<meta http-equiv="CONTENT-LANGUAGE" content="en-US">
+	<meta http-equiv="PRAGMA" content="NO-CACHE">
+	<meta http-equiv="EXPIRES" content="0">
+	<meta name="AUTHOR" content="connect.net.pk">
+	<meta name="COPYRIGHT" content="© 2023 connect.net.pk">
+	<meta name="ROBOTS" content="INDEX, FOLLOW">
+	<meta name="RESOURCE-TYPE" content="DOCUMENT">
+	<meta name="DISTRIBUTION" content="GLOBAL">
+	<meta name="REVISIT-AFTER" content="1 DAYS">
+	<meta name="KEYWORDS" content="">
+	<meta name="DESCRIPTION" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- CSS -->
+	<link rel="stylesheet" type="text/css" href="./Connect_files/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./Connect_files/jquery-ui.min.css">
+	<link rel="stylesheet" type="text/css" href="./Connect_files/daterangepicker.css">
+	<link rel="stylesheet" type="text/css" href="./Connect_files/bootstrap-datepicker.css">
+	<link rel="stylesheet" type="text/css" href="./Connect_files/bootstrap-timepicker.css">
+	<link rel="stylesheet" type="text/css" href="./Connect_files/all.css">
+	<link rel="stylesheet" type="text/css" href="./Connect_files/v4-shims.css">
+	<link rel="stylesheet" type="text/css" href="./Connect_files/colorpicker.css">
+	<link rel="stylesheet" type="text/css" href="./Connect_files/style.css">
+	<link href="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.css" rel="stylesheet">
+	<script src="https://kit.fontawesome.com/f5eb8f10bc.js" crossorigin="anonymous"></script>
+	<style>
+		.table-responsive {
+			min-height: .01%;
+			overflow-x: hidden !important;
+		}
+
+		@media screen and (max-width: 767px) {
+			.table-responsive {
+				width: 100%;
+				margin-bottom: 15px;
+				overflow-y: hidden;
+				-ms-overflow-style: -ms-autohiding-scrollbar;
+				border: 1px solid #ddd;
+			}
+
+			.table-responsive>.table {
+				margin-bottom: 0;
+			}
+		}
+		table{
+			border-color: #dee2e6 !important;
+		}
+		tr td, th{
+			padding: 5px 10px;
+		}
+		.dataTables_wrapper .row .col-sm-12.col-md-6{
+			background-color: #999999 !important;
+			padding: 20px 14px !important;
+		}
+		.dataTable  > thead > tr {
+			font-weight: bold;
+			background-image: linear-gradient(to bottom, #f8f8f8 0%, #ececec 100%);
+			background-color: #bbb;
+			background-repeat: repeat-x;
+		}
+		.page-item.active .page-link {
+			z-index: 3;
+			color: #fff;
+			background-color: #999999 !important;
+			border-color: #999999 !important;
+			color: white;
+		}
+		.page-link{
+			color: #999999;
+		}
+		.page-link:hover {
+			color: #999999;
+		}
+		.page-link:focus{
+			box-shadow: none !important;
+		}
+		.btn-check:focus+.btn, .btn:focus{
+			box-shadow: none !important;
+		}
+		.dataTables_wrapper row .col-sm-12.col-md-6 .dataTables_length label{
+			color: white !important;
+		}
+		.fa-chevron-down{
+			float: right !important;
+		}
+		tr td div {
+			max-height: 0;
+			padding: 0 10px;
+			box-sizing: border-box;
+			overflow: hidden;
+			transition: max-height 0.3s, padding 0.3s;
+		}
+		tr.active td div {
+			max-height: 500px;
+			padding: 10px 10px;
+			transition: max-height 0.6s, padding 0.6s;
+		}
+		.dics{
+			text-align: center;
+		}
+		.fc2{
+			background-color: #bbbbbb;
+			font-size: 19px;
+			color: white;
+		}
+		.border-2 {
+			border: 1px solid #dee2e6!important;
+			
+		}
+		.sdfsd{
+			width: 149px;
+		}
+		.skfj{
+			background-color: #e1effb;
+		}
+		.text-orange{
+			color: #f6a636 !important;
+		}
+		.fa-1sx{
+			font-size: 14px !important;
+		}
+		/* Define your custom classes for left and right divs */
+		.left-div {
+			flex: 1; /* This makes the left div expand to take available space */
+		}
+
+		.right-div {
+			margin-left: 10px; /* Add some margin to separate the two divs */
+		}
+
+	</style>
+	<!-- JavaScripts -->
+	
+</head>
+<body class="skin-1" data-new-gr-c-s-check-loaded="14.1131.0" data-gr-ext-installed="">
+	<nav class="navbar navbar-expand-lg navbar-light p-0 w-100 py-0 position-fixed">
+		<div class="container-fluid navbar-container px-1">
+			<div class="d-flex align-items-center">
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Sidebar">
+					<i class="fa-solid fa-bars"></i>
+				</button>
+				<a class="navbar-brand ms-2 mt-2" href="#">
+					<h4>Admin Light</h4>
+					<!-- <img class="logo" src="" alt="Connect" title="Connect" width="180"> -->
+				</a>
+				<ul class="navbar-nav ms-2">
+					<div class="collapse navbar-collapse">
+						<li class="nav-item">
+							<a class="nav-link" href="" target="_parent">Home</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link">|</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="" target="_parent">About Us</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link">|</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="" target="_parent">Services</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link">|</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="" target="_parent">Support</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link">|</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="" target="_parent">Contact Us</a>
+						</li>
+					</div>
+				</ul>
+			</div>
+			<ul class="ps-0 mb-0 list-style-none">
+				<div class="d-flex align-items-center flex-row-reverse" style="justify-content: right;">
+					<ul class="navbar-nav mb-lg-0 pull-right me-0">
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle text-light btn px-2 d-flex align-items-center p-0 fs-6 text-start" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								<i class="fa fa-user-circle-o fs-2 me-1"></i>
+								<span class="d-none d-sm-block">
+									<small>Hi, </small>
+									Musharafnet 
+								</span>
+							</a>
+							<ul class="dropdown-menu dropdown-menu-end position-absolute" aria-labelledby="navbarDropdown">
+								<li class="d-sm-none">
+									<span class="dropdown-item" style="color: #ff892a;">
+										<small>Hi, </small>
+										Musharafnet 
+									</span>
+								</li>
+								<li class="d-sm-none fs-8">
+									<span class="dropdown-item">Fri, Oct 13, 2023 18:27 PKT <br> Your IPAddress: 139.135.54.194 </span>
+								</li>
+								<li class="dropdown-divider d-sm-none"></li>
+								<li>
+									<a class="dropdown-item" href="">
+										<i class="fa fa-user me-1"></i>
+										Profile 
+									</a>
+								</li>
+								<li>
+									<a class="dropdown-item" href="">
+										<i class="fa fa-key me-1"></i>
+										Change Password 
+									</a>
+								</li>
+								<li class="dropdown-divider"></li>
+								<li>
+									<a class="dropdown-item" href="">
+										<i class="fa fa-power-off me-1"></i> 
+										Logout 
+									</a>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					<div class="credit-info">
+						<span>
+							<b>Balance</b>
+						</span>
+						<span style="font-size: 13px">
+							<b>25,260</b>
+						</span>
+					</div>
+					<style>
+						@media (max-width: 341px) {
+							.main-content {
+								margin-top: 90px;
+							}
+
+							.sidebar {
+								margin-top: 84px;
+							}
+						}
+					</style>
+					<div style="font-size:11px;" class="me-2 d-none d-md-block">
+						<span>Fri, Oct 13, 2023 18:27 PKT </span>
+						<br>
+						<span> Your IPAddress: 139.135.54.194 </span>
+					</div>
+				</div>
+			</ul>
+		</div>
+	</nav>
+	<main class="d-flex">
+		<div id="sidebar" class="sidebar scrollbar-y flex-shrink-0 collapse py-1" data-siteurl="">
+			<!-- <div class="nav-wrap-up pos-rel"><div class="nav-wrap"> -->
+				<ul class="nav-list list-unstyled ps-0 w-100 mb-0 h-100 show">
+					<li class="list-unstyled-main ps-0 border-top">
+						<a class="btn-toggle text-decoration-none collapsed align-items-center justify-content-center py-2 d-flex fs-7 mt-3" href="dashboard.html">
+							<!-- <i class="fa fa-tachometer fs-6 text-center" style="min-width:28px"></i> -->
+							<i class="fa-solid fa-gauge"></i>
+							<div class="w-100">
+								<span class="ms-1"> DashBoard </span>
+							</div>
+						</a>
+					</li>
+					<li class="list-unstyled-main ps-0 border-top open active fw-bold">
+						<a class="btn-toggle text-decoration-none collapsed align-items-center justify-content-center py-2 d-flex fs-7" data-bs-toggle="collapse" aria-expanded="false" href="#user-accounts-collapse">
+							<i class="fa fa-users fs-6 text-center" style="min-width:28px"></i>
+							<div class="w-100">
+								<i class="fa fa-angle-down float-end py-1" style="font-weight:900;"></i>
+								<span class="ms-1"> User Accounts </span>
+							</div>
+						</a>
+						<ul id="user-accounts-collapse" class="btn-toggle-nav list-unstyled fw-normal collapse submenu position-relative show">
+							<li class="module-title fw-bold d-none">
+								<a href="javascript:void(0)" class="pt-2 pb-2 border-top d-block menu-items">User Accounts </a>
+							</li>
+							<li class="active">
+								<a href="connect.html" class="pt-2 pb-2 border-top d-block menu-items">Users </a>
+							</li>
+							<li class="">
+								<a href="" class="pt-2 pb-2 border-top d-block menu-items">Online Users </a>
+							</li>
+							<li class="">
+								<a href="" class="pt-2 pb-2 border-top d-block menu-items">Offline Users </a>
+							</li>
+							<li class="">
+								<a href="" class="pt-2 pb-2 border-top d-block menu-items">Failed Connections </a>
+							</li>
+							<li class="list-unstyled w-100 border-top">
+								<a class="btn-toggle sub-btn-toggle text-decoration-none collapsed align-items-center py-2 d-block" data-bs-toggle="collapse" data-bs-target="#user-accounts-reports-collapse" aria-expanded="false" href="javascript:void(0);">
+									<!-- <i class="fa fa-caret-right"></i> -->
+									<span class="menu-text"> Reports </span>
+									<!-- Reports -->
+									<b class="arrow fa fa-angle-down mt-1" style="float:right;"></b>
+								</a>
+								<ul id="user-accounts-reports-collapse" class="btn-toggle-nav list-unstyled fw-normal collapse submenu">
+									<li class="">
+										<a href="" class="pt-2 pb-2 border-top d-block menu-items">Customers Report </a>
+									</li>
+									<li class="">
+										<a href="" class="pt-2 pb-2 border-top d-block menu-items">Activity Logs </a>
+									</li>
+									<li class="">
+										<a href="" class="pt-2 pb-2 border-top d-block menu-items">Recharge Report </a>
+									</li>
+									<li class="">
+										<a href="" class="pt-2 pb-2 border-top d-block menu-items">Activation Summary </a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li class="list-unstyled-main ps-0 border-top">
+						<a class="btn-toggle text-decoration-none collapsed align-items-center justify-content-center py-2 d-flex fs-7" data-bs-toggle="collapse" aria-expanded="false" href="#dealers-staff-collapse">
+							<i class="fa fa-user-tie fs-6 text-center" style="min-width:28px"></i>
+							<div class="w-100">
+								<i class="fa fa-angle-down float-end py-1" style="font-weight:900;"></i>
+								<span class="ms-1"> Dealers &amp; Staff </span>
+							</div>
+						</a>
+						<ul id="dealers-staff-collapse" class="btn-toggle-nav list-unstyled fw-normal collapse submenu position-relative">
+							<li class="module-title fw-bold d-none">
+								<a href="javascript:void(0)" class="pt-2 pb-2 border-top d-block menu-items">Dealers &amp; Staff </a>
+							</li>
+							<li class="">
+								<a href="" class="pt-2 pb-2 border-top d-block menu-items">Franchises </a>
+							</li>
+							<li class="">
+								<a href="" class="pt-2 pb-2 border-top d-block menu-items">Dealer Staff </a>
+							</li>
+							<li class="list-unstyled w-100 border-top">
+								<a class="btn-toggle sub-btn-toggle text-decoration-none collapsed align-items-center py-2 d-block" data-bs-toggle="collapse" data-bs-target="#dealers-staff-reports-collapse" aria-expanded="false" href="javascript:void(0);">
+									<!-- <i class="fa fa-caret-right"></i> -->
+									<span class="menu-text"> Reports </span>
+									<!-- Reports -->
+									<b class="arrow fa fa-angle-down mt-1" style="float:right;"></b>
+								</a>
+								<ul id="dealers-staff-reports-collapse" class="btn-toggle-nav list-unstyled fw-normal collapse submenu">
+									<li class="">
+										<a href="" class="pt-2 pb-2 border-top d-block menu-items">Dealers Report </a>
+									</li>
+									<li class="">
+										<a href="" class="pt-2 pb-2 border-top d-block menu-items">Balance Logs </a>
+									</li>
+									<li class="">
+										<a href="" class="pt-2 pb-2 border-top d-block menu-items">Consumed Logs </a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li class="list-unstyled-main ps-0 border-top">
+						<a class="btn-toggle text-decoration-none collapsed align-items-center justify-content-center py-2 d-flex fs-7" data-bs-toggle="collapse" aria-expanded="false" href="#billing-and-payment-collapse">
+							<i class="fa fa-money fs-6 text-center" style="min-width:28px"></i>
+							<div class="w-100">
+								<i class="fa fa-angle-down float-end py-1" style="font-weight:900;"></i>
+								<span class="ms-1"> Billing and payment </span>
+							</div>
+						</a>
+						<ul id="billing-and-payment-collapse" class="btn-toggle-nav list-unstyled fw-normal collapse submenu position-relative">
+							<li class="module-title fw-bold d-none">
+								<a href="javascript:void(0)" class="pt-2 pb-2 border-top d-block menu-items">Billing and payment </a>
+							</li>
+							<li class="">
+								<a href="" class="pt-2 pb-2 border-top d-block menu-items">Consumer Invoices </a>
+							</li>
+						</ul>
+					</li>
+					<li class="ps-0 border-top active fw-bold">
+						<a id="sidebar-collapse" class="btn-toggle text-decoration-none align-items-center py-2 fs-7 text-center collapsed" href="javascript:">
+							<hr class="position-absolute" style="right: 5%;top: 3px;width: 90%;left: 5%;">
+							<i class="fa fa-angle-double-left border rounded-circle p-1 position-relative bg-white"></i>
+						</a>
+					</li>
+				</ul>
+				<!-- </div></div> -->
+			</div>
+			<div id="main-content" class="main-content w-100">
+				<div class="main-content-inner">
+					<div id="loader"></div>
+					<div class="page-content m-3" id="content">
+						<div class="page-header row mb-2">
+							<div class="col-sm-8">
+								<h1 class="page-heading fw-lighter">Users</h1>
+								<a class="text-decoration-none lh-1 p-1 fs-6 ms-3 theme-anchor" href="/create">Add</a>
+							</div>
+							<div class="col-sm-4 justify-content-end">
+								<h6 class="d-flex result-count">Result : 779 Records</h6>
+							</div>
+						</div>
+						<form name="myform" method="get">
+							<input type="hidden" name="csrf" value="44291f5a8321aad19f1664aefbd0d176">
+							<input type="hidden" name="user_id" value="">
+							<input type="hidden" name="sortby" value="">
+							<input type="hidden" name="sortorder" value="">
+							<input type="hidden" name="reason" value="">
+							<input type="hidden" name="type" value="">
+							<div class="mb-4 filter-area">
+								<div class="row">
+									<div class="col-sm-6">
+										<div class="row align-items-center mb-2">
+											<label class="col-md-4 col-form-label fw-bold">Search</label>
+											<div class="col-sm">
+												<div class="input-group">
+													<input class="form-control" type="text" name="search_text" value="">
+													<input type="hidden" name="search_by" value="u.UserName">
+												</div>
+											</div>
+										</div>
+										<div class="row align-items-center mb-2">
+											<label class="col-md-4 col-form-label fw-bold">Franchise</label>
+											<div class="col-sm">
+												<select class="form-select" name="dealer_id">
+													<option value="0">-- All --</option>
+													<option value="809472"> Rapid Fiber Network</option>
+													<option value="1111218">&nbsp;&nbsp;&nbsp;- Adil Network</option>
+													<option value="855630">&nbsp;&nbsp;&nbsp;- Asad Network - Sargodha</option>
+													<option value="814773">&nbsp;&nbsp;&nbsp;- Dil Rehman Network </option>
+													<option value="820173">&nbsp;&nbsp;&nbsp;- Ideal Fiber Network</option>
+													<option value="810764">&nbsp;&nbsp;&nbsp;- Speed X Network </option>
+													<option value="881264">&nbsp;&nbsp;&nbsp;- U Network</option>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="row align-items-center mb-2">
+											<label class="col-md-4 col-form-label fw-bold">Packages</label>
+											<div class="col-sm">
+												<select class="form-select" name="package_id">
+													<option value="">-- All Packages --</option>
+													<option value="1">Sky</option>
+													<option value="2">Blue</option>
+													<option value="3">Yellow</option>
+													<option value="4">Orange</option>
+													<option value="5">Red</option>
+													<option value="7">Brown</option>
+													<option value="10">Purple</option>
+													<option value="20">Green</option>
+													<option value="201">Sky-2</option>
+													<option value="203">Yellow-2</option>
+													<option value="204">Orange-2</option>
+													<option value="205">Red-2</option>
+													<option value="207">Brown-2</option>
+													<option value="210">Purple-2</option>
+													<option value="220">Green-2</option>
+													<option value="230">Gray-2</option>
+												</select>
+											</div>
+										</div>
+										<div class="row align-items-center mb-2">
+											<label class="col-md-4 col-form-label fw-bold">Status</label>
+											<div class="col-sm">
+												<div class="input-group">
+													<select class="form-select" name="status_id">
+														<option value="">-- All Status --</option>
+														<option value="0">Disabled</option>
+														<option value="1">Enabled</option>
+														<option value="2">Delete Requested</option>
+														<option value="3">Verification Requested</option>
+														<option value="4">User Deleted</option>
+														<option value="5">Blocked</option>
+													</select>
+													<select class="form-select" name="payment_status">
+														<option value="" selected="">-- All Payment Status -- </option>
+														<option value="0">Paid Account</option>
+														<option value="1">Free Account</option>
+													</select>
+													<select class="form-select" name="expiry_status">
+														<option value="" selected="">-- All Expiry Status --</option>
+														<option value="0">Active</option>
+														<option value="1">Expired</option>
+													</select>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-12">
+										<div class="text-end">
+											<input class="btn theme-button" type="submit" value="Search">
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- <div class="gridview">
+								<div class="w-100 mb-3">
+									<div class="text-end">
+										<a class="theme-button btn btn-sm" href="/price-calculator">Price Calculator</a>
+									</div>
+								</div>
+							</div> -->
+						</form>
+					</script>			
+					<div class="table-responsive">
+						<table id="DataTable" class="display table-bordered" style="width:100%">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th></th>
+									<th>User Name</th>
+									<th>Detail</th>
+									<th>CNIC#</th>
+									<th>Contact</th>
+									<th>Expiry</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="active">
+									<td>1</td>
+									<td>
+										<div class="image position-relative" style="width: 27px;top: -3px;left: 14px;">
+											<i class="fa fa-user position-absolute top-0 end-0" aria-hidden="true" style="font-size: 21px; top: 2px !important; color: #eeee1a"></i>										
+											<img class="position-absolute top-0 start-0" src="./Connect_files/active.png">
+										</div>
+									</td>
+									<td class="button"><b>01fc2</b><i class="fa-solid fa-chevron-down"></i><br>Rapid Fiber Network</td>
+									<td>Shameem Akhtar<br><i>House#1AOpposite Side Sabz Gumbd Wali Masjid Phase 2 Farooq Colony Sargodha, Sargodha</i></td>
+									<td>38403-8435415-0</td>
+									<td>03344729472</td>
+									<td>2011-04-25</td>
+								</tr>
+								<tr>
+									<td style="display: none;">2</td>
+									<td colspan="7">
+										<div class="row">
+											<div class="col-md-12 d-flex justify-content-sm-end">
+												<a href="" class="text-decoration-none text-orange fa-1sx">Recharge</a>
+												<a href="" class="text-decoration-none text-orange fa-1sx ms-3">Edit Information</a>
+												<a href="" class="text-decoration-none text-orange fa-1sx ms-3">Reset Password</a>
+												<a href="" class="text-decoration-none text-orange fa-1sx ms-3">Disable User</a>
+											</div>
+											<div class="col-md-2">
+												<div class="w-100 dics">
+													<i class="fa fa-user" aria-hidden="true" style="color: #eeee1a;font-size: 100px;"></i>
+													<div class="fc2 mt-3">01fc2</div>
+												</div>
+												<div class="w-100">
+													<div class="row">
+														<div class="col-md-5 border skfj">Package</div>
+														<div class="col-md-7 border">Yellow</div>
+														<div class="col-md-5 border skfj">Status</div>
+														<div class="col-md-7 border">Enabled</div>
+														<div class="col-md-5 border skfj">Expiry</div>
+														<div class="col-md-7 border">2023-10-17 12:00:00</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-5">
+												<div class="row">
+													<div class="col-md-3 border skfj">User Name</div>
+													<div class="col-md-9 border">01fc2</div>
+													<div class="col-md-3 border skfj">Reseller</div>
+													<div class="col-md-9 border">Sargodha-Hammad</div>
+													<div class="col-md-3 border skfj">Franchise</div>
+													<div class="col-md-9 border">Rapid Fiber Network</div>
+													<div class="col-md-3 border skfj">Sub Dealer</div>
+													<div class="col-md-9 border">-</div>
+													<div class="col-md-3 border skfj">Added By</div>
+													<div class="col-md-9 border">musharafnet</div>
+													<div class="col-md-3 border skfj">Creation Date</div>
+													<div class="col-md-9 border">2023-10-17 12:00:00</div>
+													<div class="col-md-3 border skfj">MAC Address</div>
+													<div class="col-md-9 border d-flex justify-content-between">
+														<div class="left-div">
+															c0:bf:c0:7c:df:5f <br>
+															<span class="text-uppercase">Huawei Technologies, co,ltd</span>
+														</div>
+														<div class="right-div">
+															<a href="" class="text-orange fa-1sx text-decoration-none">Reset MAC</a>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-5">
+												<div class="row">
+													<div class="col-md-3 border skfj">Full Name</div>
+													<div class="col-md-9 border">Shameem Akhtar</div>
+													<div class="col-md-3 border skfj">NIC</div>
+													<div class="col-md-9 border">38403-1234567-7</div>
+													<div class="col-md-3 border skfj">Address</div>
+													<div class="col-md-9 border">House#1AOpposite Side Sabz Gumbd Wali Masjid Phase 2 Farooq Colony Sargodha, Sargodha</div>
+													<div class="col-md-3 border skfj">Zone</div>
+													<div class="col-md-9 border d-flex justify-content-between">
+														<div class="left-div">
+															default
+														</div>
+														<div class="right-div">
+															<a href="" class="text-orange fa-1sx text-decoration-none">Change Zone</a>
+														</div>
+													</div>
+													<div class="col-md-3 border skfj">Phone</div>
+													<div class="col-md-9 border"></div>
+													<div class="col-md-3 border skfj">Mobile  Number</div>
+													<div class="col-md-9 border">03011234567</div>
+													<div class="col-md-3 border skfj">Email</div>
+													<div class="col-md-9 border"></div>
+													<div class="col-md-3 border skfj">Description</div>
+													<div class="col-md-9 border"></div>
+													<div class="col-md-6 mt-1">Front Image has issue</div>
+													<div class="col-md-6 mt-1">Back Image has issue</div>
+													<div class="col-md-12">
+														Kindly open the image using image editor and save as JPEG and try to re-upload
+													</div>
+												</div>
+											</div>
+										</div>
+									</td>
+									<td style="display: none;"></td>
+									<td style="display: none;"></td>
+									<td style="display: none;"></td>
+									<td style="display: none;"></td>
+									<td style="display: none;"></td>
+								</tr>
+								<tr class="active">
+									<td>2</td>
+									<td>
+										<div class="image position-relative" style="width: 27px;top: -3px;left: 14px;">										
+											<i class="fa fa-user position-absolute top-0 end-0" aria-hidden="true" style="font-size: 21px; top: 2px !important; color: #eeee1a"></i>										
+											<img class="position-absolute top-0 start-0" src="./Connect_files/active.png">
+										</div>
+									</td>
+									<td  class="button"><b>01fc2</b><i class="fa-solid fa-chevron-down"></i><br>Rapid Fiber Network</td>
+									<td>Shameem Akhtar<br><i>House#1AOpposite Side Sabz Gumbd Wali Masjid Phase 2 Farooq Colony Sargodha, Sargodha</i></td>
+									<td>38403-8435415-0</td>
+									<td>03344729472</td>
+									<td>2011-04-25</td>
+								</tr>
+								<tr>
+									<td style="display: none;">2</td>
+									<td colspan="7">
+										<div class="row">
+											<div class="col-md-12 d-flex justify-content-sm-end">
+												<a href="" class="text-decoration-none text-orange fa-1sx">Recharge</a>
+												<a href="" class="text-decoration-none text-orange fa-1sx ms-3">Edit Information</a>
+												<a href="" class="text-decoration-none text-orange fa-1sx ms-3">Reset Password</a>
+												<a href="" class="text-decoration-none text-orange fa-1sx ms-3">Disable User</a>
+											</div>
+											<div class="col-md-2">
+												<div class="w-100 dics">
+													<i class="fa fa-user" aria-hidden="true" style="color: #eeee1a;font-size: 100px;"></i>
+													<div class="fc2 mt-3">01fc2</div>
+												</div>
+												<div class="w-100">
+													<div class="row">
+														<div class="col-md-5 border skfj">Package</div>
+														<div class="col-md-7 border">Yellow</div>
+														<div class="col-md-5 border skfj">Status</div>
+														<div class="col-md-7 border">Enabled</div>
+														<div class="col-md-5 border skfj">Expiry</div>
+														<div class="col-md-7 border">2023-10-17 12:00:00</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-5">
+												<div class="row">
+													<div class="col-md-3 border skfj">User Name</div>
+													<div class="col-md-9 border">01fc2</div>
+													<div class="col-md-3 border skfj">Reseller</div>
+													<div class="col-md-9 border">Sargodha-Hammad</div>
+													<div class="col-md-3 border skfj">Franchise</div>
+													<div class="col-md-9 border">Rapid Fiber Network</div>
+													<div class="col-md-3 border skfj">Sub Dealer</div>
+													<div class="col-md-9 border">-</div>
+													<div class="col-md-3 border skfj">Added By</div>
+													<div class="col-md-9 border">musharafnet</div>
+													<div class="col-md-3 border skfj">Creation Date</div>
+													<div class="col-md-9 border">2023-10-17 12:00:00</div>
+													<div class="col-md-3 border skfj">MAC Address</div>
+													<div class="col-md-9 border d-flex justify-content-between">
+														<div class="left-div">
+															c0:bf:c0:7c:df:5f <br>
+															<span class="text-uppercase">Huawei Technologies, co,ltd</span>
+														</div>
+														<div class="right-div">
+															<a href="" class="text-orange fa-1sx text-decoration-none">Reset MAC</a>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-5">
+												<div class="row">
+													<div class="col-md-3 border skfj">Full Name</div>
+													<div class="col-md-9 border">Shameem Akhtar</div>
+													<div class="col-md-3 border skfj">NIC</div>
+													<div class="col-md-9 border">38403-1234567-7</div>
+													<div class="col-md-3 border skfj">Address</div>
+													<div class="col-md-9 border">House#1AOpposite Side Sabz Gumbd Wali Masjid Phase 2 Farooq Colony Sargodha, Sargodha</div>
+													<div class="col-md-3 border skfj">Zone</div>
+													<div class="col-md-9 border d-flex justify-content-between">
+														<div class="left-div">
+															default
+														</div>
+														<div class="right-div">
+															<a href="" class="text-orange fa-1sx text-decoration-none">Change Zone</a>
+														</div>
+													</div>
+													<div class="col-md-3 border skfj">Phone</div>
+													<div class="col-md-9 border"></div>
+													<div class="col-md-3 border skfj">Mobile  Number</div>
+													<div class="col-md-9 border">03011234567</div>
+													<div class="col-md-3 border skfj">Email</div>
+													<div class="col-md-9 border"></div>
+													<div class="col-md-3 border skfj">Description</div>
+													<div class="col-md-9 border"></div>
+													<div class="col-md-6 mt-1">Front Image has issue</div>
+													<div class="col-md-6 mt-1">Back Image has issue</div>
+													<div class="col-md-12">
+														Kindly open the image using image editor and save as JPEG and try to re-upload
+													</div>
+												</div>
+											</div>
+										</div>
+									</td>
+									<td style="display: none;"></td>
+									<td style="display: none;"></td>
+									<td style="display: none;"></td>
+									<td style="display: none;"></td>
+									<td style="display: none;"></td>
+								</tr>
+							</tbody>
+							<tfoot>
+								<tr>
+									<td colspan="7">
+										<button class="theme-button btn btn-sm">Enable User</button>
+										<button class="theme-button btn btn-sm">Disable User</button>							
+										<button class="theme-button btn btn-sm">Delete Request</button>
+										<button class="theme-button btn btn-sm">Verify Request</button>
+										<button class="theme-button btn btn-sm">Discard Verification</button>							
+									</td>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+				</div>
+				<footer>
+
+				</footer>
+			</div>
+		</div>
+	</main>
+	<script type="application/javascript" src="./Connect_files/jquery-3.6.0.min.js.download"></script>
+	<script src="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.js"></script>
+	<script>
+		$('#example').dataTable( {
+			"orderable": false
+		} );
+		new DataTable('#DataTable');
+
+	</script>
+	<script type="application/javascript" src="./Connect_files/bootstrap.js.download"></script>
+	<script type="application/javascript" src="./Connect_files/jquery-ui.min.js.download"></script>
+	<script type="application/javascript" src="./Connect_files/all.js.download" defer=""></script>
+	<script type="application/javascript" src="./Connect_files/v4-shims.js.download" defer=""></script>
+	<script type="application/javascript" src="./Connect_files/moment.js.download"></script>
+	<script type="application/javascript" src="./Connect_files/daterangepicker.js.download"></script>
+	<script type="application/javascript" src="./Connect_files/bootstrap-datepicker.js.download"></script>
+	<script type="application/javascript" src="./Connect_files/bootstrap-timepicker.js.download"></script>
+	<script type="application/javascript" src="./Connect_files/highcharts.js.download"></script>
+	<script type="application/javascript" src="./Connect_files/exporting.js.download"></script>
+	<script type="application/javascript" src="./Connect_files/sidebar.js.download"></script>
+	<script type="application/javascript" src="./Connect_files/common.js.download"></script>
+	<script type="application/javascript" src="./Connect_files/common_ajax.js.download"></script>
+	<script type="application/javascript" src="./Connect_files/ajax.js.download"></script>
+	<script type="application/javascript" src="./Connect_files/validations.js.download"></script>
+	<script type="application/javascript" src="./Connect_files/checkbox.js.download"></script>
+	<script type="application/javascript" src="./Connect_files/colorpicker.js.download"></script>
+	<script type="text/javascript">
+      // Notice how this gets configured before we load Font Awesome
+		window.FontAwesomeConfig = {
+			autoReplaceSvg: false
+		}
+	</script>
+	<!-- UI Search -->
+	<script type="application/javascript" src="./Connect_files/canvas.js.download"></script>
+	<script>
+		$('.button').on('click', function() {
+			$(this).parent().next().toggleClass('active');
+		});
+	</script>
+</body>
+</html>

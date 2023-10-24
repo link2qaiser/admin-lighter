@@ -1,0 +1,78 @@
+$(document).ready(function() {
+    hilighted = false;
+    url = window.location.href.split('?')[0];
+    $('.sidebar ul li > a').each(function(){
+        if ($(this).attr('href') != undefined){
+            var ThisHref = ($(this).attr('href').split('?'))[0];
+            if(url == ThisHref && !hilighted) {
+                $(this).closest('li').addClass('active');
+                hilighted = true;
+            }
+        }
+    })
+    $('.sidebar ul li > a').each(function(){
+        if ($(this).attr('href') != undefined){
+            var ThisHref = ($(this).attr('href').split('?'))[0];
+            if(url.indexOf(ThisHref) > -1 && !hilighted) {
+                $(this).closest('li').addClass('active');
+                hilighted = true;
+            }
+        }
+    });
+
+    active = $('li.active');
+    active.parent('ul').addClass('show');
+    active.parent('ul').parent('li').addClass('open active fw-bold');
+    active.parent('ul').parent('li').parent('ul').addClass('show');
+    active.parent('ul').parent('li').parent('ul').parent('li').addClass('active');
+        
+    $("#sidebar-collapse").on('click', function(){;
+        if (document.getElementById("sidebar-collapse").classList.contains("closed")){
+            openSidebar()
+            localStorage.setItem("sidebar", "open");
+        } else {
+            closeSidebar();
+            localStorage.setItem("sidebar", "closed");
+        }
+    })
+
+    if (localStorage.getItem("sidebar") == "closed"){
+        closeSidebar();
+    }
+    
+    $("a.btn-toggle").not("a.sub-btn-toggle").on('click', function(){collapseAll()});
+})
+
+function collapseAll() {
+    k = $(".btn-toggle").not(".collapsed");
+    for (let i = 0; i < k.length; i++) {
+        k[i].click();
+    }
+}
+
+function closeSidebar () {
+    $(".btn-toggle-nav.submenu.show").removeClass("show");
+    $("#sidebar").addClass("closed");
+    $(".nav-list > li > .btn-toggle-nav > li:first-child").removeClass("d-none");
+    $(".list-unstyled li a:not(.sub-btn-toggle) > *").addClass("d-none");
+    $(".list-unstyled li ul").removeClass("position-relative").addClass("position-fixed").css("left","45px").css("width","188px").css('margin-top' , "-40px");
+    $(".list-unstyled li ul.list-unstyled > li > ul").removeClass("position-fixed").addClass("position-relative").css("left","0px").css("width","188px").css('margin-top' , "0px");
+    $(".list-unstyled li a i").removeClass("d-none");
+    $(".list-unstyled li a svg").removeClass("d-none");
+    $(".list-unstyled li a.btn-toggle div").addClass("position-fixed").css("left", "45px").css("width", "190px").css("padding", "8.3px").css("background-color", "#141a1b");
+    $("#sidebar-collapse").addClass("closed");
+    $("#sidebar-collapse > i").removeClass("fa-angle-double-left").addClass("fa-angle-double-right");
+}
+
+function openSidebar () {
+    $("#sidebar").removeClass("closed");
+    $(".sidebar > div > a").removeClass("d-none");
+    $(".sidebar > div > div").addClass("d-none");
+    $(".nav-list > li > .btn-toggle-nav > li:first-child").addClass("d-none");
+    $(".list-unstyled li a > *").removeClass("d-none");
+    $(".list-unstyled li ul").removeClass("position-fixed").removeAttr("style");
+    $(".list-unstyled li a.btn-toggle div").removeClass("position-fixed").attr("style","width: -webkit-fill-available;");
+    $("#main-content").removeClass("expand");
+    $("#sidebar-collapse").removeClass("closed");
+    $("#sidebar-collapse > i").removeClass("fa-angle-double-right").addClass("fa-angle-double-left");
+}

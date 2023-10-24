@@ -1,0 +1,121 @@
+"use strict";
+
+function submit_sort(sortby, sortorder){
+	var frm = document.myform;
+	if(frm.pageno){
+		frm.pageno.value = 1;
+	}
+	frm.sortby.value = sortby;
+	frm.sortorder.value = sortorder;
+	frm.submit();
+}
+
+function go(url,userid){
+	var frm = document.myform;
+	frm.action = url;
+	uncheckAll('user_id');
+	frm.user_id.value = userid;
+	submit_myform();
+}
+function gowithreason(url,userid){
+	var frm = document.myform;
+	var myprompt = prompt("Provide description of this action","");
+	if(!myprompt){
+		if(myprompt == ""){
+			alert("Please provide a reason for the action.");
+			gowithreason(url,userid);
+		}
+		return false;
+	}
+	frm.reason.value = myprompt;
+	frm.action = url;
+	uncheckAll('user_id');
+	if(frm.user_id){
+		frm.user_id.value = userid;
+	}
+	frm.method = "post";
+	submit_myform();
+}
+function gowithcheck(url, userid){
+	var frm = document.myform;
+	if(confirm("Are you sure, you want to continue with this action.")){
+		frm.action = url;
+		//uncheckAll('user_id');
+		if(frm.user_id){
+			frm.user_id.value = userid;
+		}
+		frm.method = "post";
+		frm.submit();
+	}
+	return false;
+}
+function goAll(url){
+	var frm = document.myform;
+	if(IfAnyCheckedInArray('user_id')){
+		if(confirm("Are you sure, you want to continue with this action.")){
+			var myprompt = "";
+			do{
+				var myprompt = prompt("Provide description of this action","");
+				if(myprompt == ""){
+					alert("Please provide a reason for the action.");
+				}
+			}while(myprompt == "");
+			if(myprompt && myprompt != ""){
+				frm.reason.value = myprompt;
+				frm.action = url;
+				frm.method = "post";
+				frm.submit();
+			}else{
+				return false;
+			}
+		}
+	}else{
+		alert("Zero Item Checked");
+	}
+	return false;
+}
+
+var userReferenceObject = function(){
+	var method="GET", divcontainer;
+	
+	this.OnSuccess = function(){
+		var response = this.GetResponseText();
+		if(response){
+			this.divcontainer.innerHTML = response;
+		}
+	}
+	this.OnLoading = function(){
+		this.divcontainer.innerHTML = "<div class='loading text-center'><img src='"+loadingImage+"'><br />Loading</div>";
+	}
+	this.OnFailure = function(){
+		this.divcontainer.innerHTML = "Failed to load the file";
+	}
+	this.GetData = function(url, user_id){
+		var user_info_container = document.getElementById(user_id);
+		var tr = user_info_container.parentNode;
+		this.divcontainer = user_info_container.firstChild;	
+		if(tr.style.display == "none"){
+			tr.style.display = "";
+			var params = '?';
+			if(url.search('\\?')>0){ //if question mark(?) exist in url
+				params = '&';
+			}
+			params += "AJAXRequest=true&user_id="+user_id;
+			url    += params;
+			this.InitializeRequest(method, url);
+			this.Commit();
+		}else{
+			tr.style.display = "none";
+		}
+	}
+}
+userReferenceObject.prototype = new ajax();
+var userObject = new userReferenceObject();
+
+$(document).ready(function(){
+	$(".city_id").on('change',function(){
+		$("[name=dealer_id]").find(':selected').removeAttr('selected')
+		$("[name=dealer_id]").prop("selectedIndex", 0);
+		submit_myform();
+	});
+});

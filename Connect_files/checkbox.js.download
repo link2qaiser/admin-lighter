@@ -1,0 +1,80 @@
+"use strict";
+
+var myIndex, lastIndex;
+
+//Check All
+function toggleAll(element, ref){
+	var element_array = document.myform.elements[ref+"[]"];
+	var checkstatus = element.checked;
+	if(element_array){
+		for(var i=0;i<element_array.length;i++){
+			element_array[i].checked = checkstatus;
+		}
+	}
+}
+
+function checkAll(ref){
+	var element_array = document.myform.elements[ref+"[]"];
+	var checkstatus = true;
+	if(element_array){
+		for(var i=0;i<element_array.length;i++){
+			element_array[i].checked = checkstatus;
+		}
+	}
+}
+
+function uncheckAll(ref){
+	var element_array = document.myform.elements[ref+"[]"];
+	var checkstatus = false;
+	if(element_array){
+		for(var i=0;i<element_array.length;i++){
+			element_array[i].checked = checkstatus;
+		}
+	}
+}
+
+function IfAnyCheckedInArray(ref){
+	var element_array = document.myform.elements[ref+"[]"];
+	if(!element_array.length)   element_array = [document.myform.elements[ref+"[]"]];
+	for(var i=0;i<element_array.length;i++){
+		if(element_array[i].checked == true){
+			return true;
+		}
+	}
+	return false;
+}
+
+function clickage(evt, element, ref){
+	myIndex = getMyIndex(element, ref);
+	var checkedStatus = element.checked;
+	evt=(evt)?evt:event;
+	var target=(evt.target)?evt.target:evt.srcElement;
+	if (evt.shiftKey) {
+		ShiftCheck(checkedStatus, ref);
+	}
+	lastIndex = myIndex;
+}
+
+function getMyIndex(element, ref){
+	var checklist = document.myform.elements[ref+"[]"];
+	for(var i=0; i<checklist.length; i++){
+		if(checklist[i] == element){
+			return i;
+		}
+	}
+}
+
+function ShiftCheck(checkedStatus, ref){
+	var startIndex, endIndex;
+	if(myIndex > lastIndex){
+		startIndex = lastIndex;
+		endIndex = myIndex;
+	}else{
+		startIndex = myIndex;
+		endIndex = lastIndex;
+	}
+	var checklist = document.myform.elements[ref+"[]"];
+	for(var i=startIndex; i <= endIndex; i++){
+		checklist[i].checked = checkedStatus;
+	}
+}

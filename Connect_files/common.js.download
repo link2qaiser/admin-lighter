@@ -1,0 +1,1161 @@
+"use strict";
+
+var siteurl;
+
+$(function(){
+	siteurl = $("#sidebar").data("siteurl");
+});
+
+function numberToWords(number) {
+    var digit = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+    var elevenSeries = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+    var countingByTens = ['twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+    var shortScale = ['', 'thousand', 'million', 'billion', 'trillion'];
+
+    number = number.toString(); number = number.replace(/[\, ]/g, ''); if (number != parseFloat(number)) return 'not a number'; var x = number.indexOf('.'); if (x == -1) x = number.length; if (x > 15) return 'Very large number; Not allowed!'; var n = number.split(''); var str = ''; var sk = 0; for (var i = 0; i < x; i++) { if ((x - i) % 3 == 2) { if (n[i] == '1') { str += elevenSeries[Number(n[i + 1])] + ' '; i++; sk = 1; } else if (n[i] != 0) { str += countingByTens[n[i] - 2] + ' '; sk = 1; } } else if (n[i] != 0) { str += digit[n[i]] + ' '; if ((x - i) % 3 == 0) str += 'hundred '; sk = 1; } if ((x - i) % 3 == 1) { if (sk) str += shortScale[(x - i - 1) / 3] + ' '; sk = 0; } } if (x != number.length) { var y = number.length; str += 'point '; for (var i = x + 1; i < y; i++) str += digit[n[i]] + ' '; } str = str.replace(/\number+/g, ' '); return str.trim() + ".";
+}
+
+// JavaScript Document
+function submit_myform(){
+  	var frm = document.myform;
+  	if(frm.pageno){
+  		$('.page  option[value="1"]').prop('selected', true);
+  	}
+  	$("form").submit();
+}
+
+function submit_sort(sortby, sortorder){
+	var frm = document.myform;
+	frm.sortby.value = sortby;
+	frm.sortorder.value = sortorder;
+	submit_myform();
+}
+
+function report(url, type, method){
+	//console.log(url);
+	var frm = document.myform;
+	if(method){
+		frm.method = method;
+	}
+	frm.type.value = type;
+	frm.action = url;
+	frm.submit();
+	frm.action = "";
+	frm.method = "";
+	frm.type.value = "";
+}
+
+//delete confrm alert
+function deleteConfirm(url){
+	if (!confirm("Are you sure to delete.")) return false
+	var frm = document.myform;
+	frm.action = url;
+	frm.method = "post";
+	frm.submit();
+}
+
+//Ajax Output to Array
+function AjaxOutputToArray(data){
+	var data = data.split("|^^^|");
+	for(var i=0; i<data.length; i++){
+		data[i] = data[i].split("|^|");
+	}
+	return data;
+}
+
+//Add Options to List Box
+function addOption(selectbox,text,value ){
+	var optn = document.createElement("OPTION");
+
+	var text = decodeURI(text.replace(/&nbsp;/g, "%20"));
+	optn.text = text;
+	optn.value = value;
+	if(selectbox != undefined){
+		selectbox.options.add(optn);
+	}
+}
+
+function removeAllOption(element){
+    element.find("option:gt(0)").remove();
+}
+
+//LIMIT CHARACTERS TO SPECIFIED LENGTH, AND SHOW REMAINING CHARACTERS BELOW IT
+function limit_characters(element) {
+	console.log(element);
+	var limit = $(element).attr('maxlength') ? $(element).attr('maxlength') : 255;	
+	var text_length = $(element).val().length;	
+	var text_remaining = limit - text_length;
+
+	$(element).next().html(text_remaining + ' characters remaining');
+}
+
+//JavaScript Document
+$(document).ready(function (){
+	$("input[type='submit']").click(function(e){
+	    e.preventDefault();
+	    var valid = true;
+	    $(this).prop('disabled', true);
+	    var el = $(this);
+	    setTimeout(function(){el.prop('disabled', false); }, 3000);
+
+	    if($.isFunction(window.validate_form) && $(this).hasClass("validate-form")){
+	    	valid = validate_form();
+		}
+	    
+	    /*var get_required_fields = $(this).closest('form').find('input,textarea,select').filter('[required]');
+	    //var emails = $(this).closest('form').find('input[type=email]');
+	    //var file_uploads = $(this).closest('form').find('input[type=file]');
+	    
+	    get_required_fields.each(function( index, value ) {
+			if($( this ).val().length == '0' || $( this ).val() == '0'){
+				$(this).addClass('is-invalid').focus();
+				$(this).closest('.form-control-addon-within').addClass('is-invalid').focus();
+				//console.log($(this).closest('.form-group').find('small').length);
+				if($(this).closest('.form-group').find('.invalid-feedback').length == 0){
+					$(this).closest('.form-group').append('<small class="block mt-2 invalid-feedback" style="color: rgb(220, 53, 69);">This field is required.</small>');
+				}
+				if(index == 0){
+					$(this).focus();
+				}
+				valid = false;
+			}else{
+				//console.log("Value exists");
+				$(this).removeClass('is-invalid');
+				$(this).closest('.form-control-addon-within').removeClass('is-invalid');
+				$(this).closest('.form-group').find('small').remove();
+			}
+		});*/
+	    
+	    //console.log(valid);
+	    if (valid) $("form").submit();
+	});
+	
+	$("form input").keyup(function(e){
+		if(event.keyCode == 13){
+			//$("[name=KMOut]").trigger("focusout");
+			$("input[type='submit']").trigger("click");
+
+		}
+	});
+	
+	//function to disable all empty input in GET request
+	$("form[name=myform]").submit(function(){
+		if(myform.method.toLowerCase()==='get'){
+			$('form :input[name="csrf"]').prop("disabled", "disabled");
+			$('form :input[name="filter"]').prop("disabled", "disabled");
+			//every tag in the input tag of form that has empty value (e.g drop down)
+			$('form :input [value=""]').prop("disabled", "disabled");
+			//For each input tag with empth value in the form
+			$('form :input[value=""]').each(function(){
+			   //If the field is empty
+			   if($(this).val() == ""){
+				   $(this).prop( "disabled", "disabled" );
+			   }
+			});
+		}
+	    return true; // ensure form still submits
+	});
+	
+	$(".allow-natural-numbers").on("keyup", function(){
+		($(this).val() > 0) ? null : $(this).val("");
+	});
+	
+	$(".allow-whole-numbers").on("keyup", function(){
+		($(this).val() >= 0) ? null : $(this).val("");
+	});
+	
+	if($('.file-upload').length != 0){
+		$('.file-upload').ace_file_input({
+			no_file:'No File ...',
+			btn_choose:'Choose',
+			btn_change:'Change',
+			droppable:false,
+			onchange:null,
+			thumbnail:false //| true | large
+			//whitelist:'gif|png|jpg|jpeg'
+			//blacklist:'exe|php'
+			//onchange:''
+			//
+		});
+	}
+	
+	// LIMIT NUMBER OF CHARACTERS ON TEXTAREA AND SHOW IT BELOW TEXTAREA
+	// On Page Load
+	var element = $('textarea.limit-characters');
+	
+	element.each(function(){
+	    var limit = $(this).attr('maxlength') ? $(this).attr('maxlength') : 255;
+	    var existing_characters = $(this).val().length > 0 ? $(this).val().length : 0;
+	    $(this).next().html((limit - existing_characters) + ' characters remaining');
+	});
+
+    // On keyup event
+    element.on("keyup", function() {
+		limit_characters($(this));
+	});
+});
+
+/*$(document).on("click", ".logs", function(){
+	var element = $(this);
+	if($(this).hasClass('collapsed')) {
+		var id = $(this).attr('id');
+		element.siblings(".activity-logs").html("<img src='"+loadingImage+"'><br />Loading")
+		$.ajax({
+			type: 'GET',
+			url:  ($(element).data("link")),
+			data: [{ name:"AJAXRequest", value:true}],
+			success: function (data) {
+				element.siblings(".activity-logs").html(data);
+			}
+		});
+	}else{
+		element.siblings(".activity-logs").html("");
+	}
+});*/
+
+//Page Name
+function getPageName(){
+	var sPath = window.location.pathname;
+	var sPage = sPath.substring(sPath.lastIndexOf('/') + 1);
+	return sPage;
+}
+
+// Removes the outline border of Al Links
+window.onload = blur_all_links;
+function blur_all_links(){
+	var links = document.getElementsByTagName("a");
+	var links_count = links.length;
+	for(var i=0; i<links_count; i++){
+		links[i].onfocus = blur_it;
+	}
+}
+function blur_it(){
+	if(this.blur){
+		this.blur();
+	}
+}
+
+//Check if a variable is an array of scaler
+function isArray(obj) {
+	//returns true is it is an array
+	if (obj.constructor.toString().indexOf("Array") == -1)
+		return false;
+	else
+		return true;
+}
+
+//Trim the string from both ends
+function trim(stringToTrim) {
+	return stringToTrim.replace(/^\s+|\s+$/g,"");
+}
+
+// Check for Numeric Value
+function checkNumeric(number){
+	var Regex = /^[0-9]+$/;
+	if(!number.match( Regex )){
+		return false;
+	}
+	return true;
+}
+
+jQuery.fn.numberOnly = function(event) {
+	var key = event.which;
+	var keychar = String.fromCharCode(key);
+	// control keys key0 = SPACE, key8 = BACKSPACE, key9 = , TAB, key13 = ENTER, key 27 =
+	if ((key==null) || (key==0) || (key==8) || (key==13) || (key==27))
+		return true;
+	// numbers
+	else if ((("0123456789,").indexOf(keychar) > -1))
+		return true;
+	else
+		return false;
+};
+
+//Date in a format of yyyy-mm-dd
+function formatedDate(d){
+	var year = d.getFullYear();
+	var month = d.getMonth()+1;
+	var date = d.getDate();
+
+	var formated_date = year+"-";
+	if(month < 10){formated_date += "0";}formated_date += month+"-";
+	if(date < 10){formated_date += "0";}formated_date += date;
+
+	return formated_date;
+}
+
+//User Manegement
+function checkUserName(userName){
+	if(userName == ""){
+		alert('Please enter a username');
+		return false;
+	}else if(userName.length < 3 || userName.length > 30){
+		alert('Please enter a UserName of 3 to 30 characters');
+		return false;
+	}else{
+		var Regex = /^[a-zA-Z0-9]+([-_.@][0-9a-zA-Z]+)*$/;
+		if(!userName.match( Regex ) || userName.length < 3){
+			alert("Please enter a valid Login ID of 3 or more characters.\nLogin ID should starts with alphanumeric character and can contain alphanumeric characters, @ sign, dot, underscore and hyphen only \nand single @ sign or dot or underscore or hyphen allow between the two words.");
+			return false;
+		}
+	}
+	return true;
+}
+function checkPassword(passWord){
+	if(passWord=="" || passWord.length < 6){
+		alert('Please enter Password of atleast 6 characters');
+		return false;
+	}else{
+		var Regex = /[^\w\+\-\!\@\#\$\%\^\&\*\?]/;
+		if(passWord.match( Regex )){
+			alert("Please enter a valid Password");
+			return false;
+		}
+	}
+	return true;
+}
+function checkNIC(nic_number, id_type){
+	var Regex;
+	if(id_type == "CNIC"){
+		Regex = /^\d{5}-\d{7}-\d{1}$/;
+	}else if(id_type == "NICOP" || id_type == "POC"){
+		Regex = /^\d{6}-\d{6}-\d{1}$/;
+	}else{
+		Regex = '';
+	}
+	if(!nic_number.match(Regex)){
+		alert('Please Enter a valid NIC Number');
+		return false;
+	}
+	return true;
+}
+function checkNTN(ntn_nic){
+	var Regex = /^\d{7}-\d{1}$/;
+	if(!ntn_nic.match(Regex)){
+		alert('Please Enter a valid NTN Number');
+		return false;
+	}
+	return true;
+}
+function checkFullName(full_name){
+	if(full_name == ""){
+		alert('Please enter Full Name');
+		return false;
+	}else{
+		var Regex = /^[a-zA-Z ]+$/;
+		if(!full_name.match( Regex )){
+			alert("Please enter Full Name of the User as per ID Card.");
+			return false;
+		}
+	}
+	return true;
+}
+function checkPhoneNumber(phoneNumber){
+	var Regex = /^\d{10,11}$/;
+	if(!phoneNumber.match(Regex)){
+		alert('Please Enter a valid Phone Number');
+		return false;
+	}
+	return true;
+}
+function checkMobileNumber(mobileNumber){
+	var Regex = /^\d{11}$/;
+	if(!mobileNumber.match(Regex)){
+		alert('Please Enter a valid Mobile Number');
+		return false;
+	}
+	return true;
+}
+function checkEmailAddress(email){
+	var Regex = /^([0-9a-zA-Z]+([_.-]?\w+)*@[0-9a-zA-Z]+[0-9,a-z,A-Z,.,-]*(.){1}[a-zA-Z]{2,4})+$/;
+	if(!email.match( Regex )){
+		alert('Please Enter a valid E-mail Address');
+		return false;
+	}
+	return true;
+}
+
+//Scratch Card
+function checkSerialNumber(serialnumber){
+	if(serialnumber == ""){
+		alert("Please enter a Serial Number");
+		return false;
+	}else if(serialnumber.length != 8){
+		alert("Please enter a valid Serial Number");
+		return false;
+	}else if(!checkNumeric(serialnumber)){
+		return false;
+	}
+	return true;
+}
+
+// return the value of the radio button that is checked, return an empty string if none are checked, or there are no radio buttons
+function getCheckedValue(radioObj) {
+	if(!radioObj)
+		return "";
+	var radioLength = radioObj.length;
+	if(radioLength == undefined)
+		if(radioObj.checked)
+			return radioObj.value;
+		else
+			return "";
+	for(var i = 0; i < radioLength; i++) {
+		if(radioObj[i].checked) {
+			return radioObj[i].value;
+		}
+	}
+	return "";
+}
+// set the radio button with the given value as being checked do nothing if there are no radio buttons if the given value does not exist, all the radio buttons are reset to unchecked
+function setCheckedValue(radioObj, newValue) {
+	if(!radioObj)
+		return;
+	var radioLength = radioObj.length;
+	if(radioLength == undefined) {
+		radioObj.checked = (radioObj.value == newValue.toString());
+		return;
+	}
+	for(var i = 0; i < radioLength; i++) {
+		radioObj[i].checked = false;
+		if(radioObj[i].value == newValue.toString()) {
+			radioObj[i].checked = true;
+		}
+	}
+}
+
+//Blink IT
+function blinkIt() {
+	if (!document.all) return;
+	else {
+		for(var i=0; i<document.all.tags('blink').length; i++){
+			var s=document.all.tags('blink')[i];
+			s.style.visibility=(s.style.visibility=='visible')?'hidden':'visible';
+		}
+	}
+}
+
+//Charater limit notification
+function character_limit_status(elem, maxlength){
+	if(typeof elem == 'undefined') return false;
+
+	$(document).ready(function(){
+		var e = $('.' + elem);
+		$.each(e, function(i, e_single){
+			e_single = $(e_single);
+			var max_len = maxlength ? maxlength : (e_single.attr('maxlength') ? e_single.attr('maxlength') : 255);
+			e_single.attr('maxlength', maxlength);
+			var length = e_single.val().length;
+
+			e_single.after('<div class="character-length-status">Word count : <span class="length">' + length + '</span> Max length : ' + max_len + '</div>');
+		});
+
+		$(e).keyup(function(){
+			var elem = $(this);
+			var length = elem.val().length;
+			var max_len = maxlength ? maxlength : (elem.attr('maxlength') ? elem.attr('maxlength') : 255);
+
+			//update character length
+			elem.next('.character-length-status').find('span.length').html(length);
+			//blink
+			if(length == max_len){
+				elem.next('.character-length-status').addClass('threshold');	//fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
+			} else {
+				elem.next('.character-length-status').removeClass('threshold');
+			}
+		});
+	});
+}
+
+character_limit_status('show-character-length');
+
+$(document).ready(function(){
+	/* TABS */
+	$('.tab-wrap .content').css('display', 'none');
+	$('.tab-wrap .tab-ancs a').click(function(){
+		var content = $(this).attr('class');
+		$(this).siblings().removeClass('active');
+		if(!$(this).hasClass('active')){
+			$(this).closest('.tab-wrap').find('.content').css('display','none');
+		}
+		$(this).addClass('active');
+		$(this).closest('.tab-wrap').find('.tab-contents .' + content).css('display','block');
+	});
+	$('.tab-wrap .tab-ancs a:first').trigger('click');
+	/* END TABS*/
+
+	/* *** ADD n REMOVE *** */
+	//Add n remove
+	var wrap		= '.add-n-remove-wrap';
+	var cont		= '.add-n-remove-content';
+	var add_btn		= '.add-btn';
+	var remove_btn	= '.remove-btn';
+
+	//Hide remove btn
+	$.each($(wrap), function(_, item){
+		var item = $(item);
+		if(item.find(cont).length == 1) item.find(remove_btn).css('display','none');
+	});
+
+	// Add button Event
+	$(add_btn).click(function(){
+		var c_wrap		= $(this).closest(wrap);
+		var elem_clone	= '<div class="' + cont.replace('.','') + '">' + $(c_wrap).find(cont + ':first').clone().html() + '</div>';
+
+		// append
+		$(c_wrap).find(cont + ':last').after(elem_clone);
+		// reset fields
+
+		$(c_wrap).find(cont + ':last input[type="hidden"]').val('');
+		$(c_wrap).find(cont + ':last .default-lang-expertise').val('0');
+		$(c_wrap).find(cont + ':last input[type="checkbox"]').prop('checked', false);
+		$(c_wrap).find(cont + ':last select').val(null);
+		// show remove btn
+		if($(c_wrap).find(cont).length > 1) $(c_wrap).find(cont + ' ' + remove_btn).css('display','inline-block');
+	});
+
+
+
+	// Remove button Event
+	$(remove_btn).on('click', function(){
+		var c_wrap		= $(this).closest(wrap);
+		var  c_box_to_re	= $(this).closest(cont);
+		var c_sort		= $(this).closest('.sort');
+		//remove elem
+		if($(c_wrap).find(cont).length > 1) c_box_to_re.remove();
+		// hide remove btn
+		if($(c_wrap).find(cont).length == 1) $(c_wrap).find(remove_btn).css('display','none');
+
+		//Refresh Ordering numbers
+		refresh_ordering_number(c_sort);
+	});
+	/* *** END ADD n REMOVE *** */
+
+	/* Sortable */
+	//Fix the width
+	$('.sort > tr > td').each(function(){
+        $(this).css('width', $(this).width() +'px');
+    });
+	/* END Sortable */
+	
+	// Date Picker
+	if($('.date-picker').length != 0){
+		$('.date-picker').datepicker({
+			autoclose: true,
+			todayHighlight: true,
+			orientation: "top",
+		});
+	}
+	
+	if($('.date-range-picker').length != 0){
+		$('.date-range-picker').daterangepicker(
+			{ autoUpdateInput: false, locale: { format: 'YYYY-MM-DD' }, opens : 'left' }
+		 );
+		$('.date-range-picker').on('apply.daterangepicker', function(ev, picker) {
+	        $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
+	    });
+	}
+	
+	if($('.time-picker').length != 0){
+		$('.time-picker').timepicker({
+			minuteStep: 1,
+			showSeconds: true,
+			showMeridian: false,
+			disableFocus: true
+		}).on('focus', function() {
+			$('.time-picker').timepicker('showWidget');
+		});
+	}
+	
+	$(".confirm-action").on("click", function(){
+		return confirm($(this).data("msg"));
+	});
+});
+
+function refresh_ordering_number(parent_elem){
+	var counter = 1;
+	$.each($(parent_elem).find('.ordering'), function(_, item){
+		$(item).html(counter);
+		counter++;
+	});
+}
+
+//trafic Monitor 
+var chart;
+var chartInterval;
+var maxZoomVal = 180;
+
+$(document).on("click", ".traffic-monitor-container", function(){
+	var element = $(this);
+	
+	if($(this).attr("aria-expanded") == "true") {
+		$(".traffic-monitor").collapse('hide').html("");
+		
+		var userName = $(this).attr('id');
+		var serverip = $(this).attr('data-serverip');
+		
+		var str = '<div id="container-'+userName+'" style="min-width: 400px; margin: 0 auto"></div><div id="trafico-'+userName+'" style="text-align:center;"></div>';
+		element.next(".traffic-monitor").html(str);
+		
+		clearInterval(chartInterval);
+
+		var containerID = 'container-'+userName;
+		
+		plot_UserTraffic(userName, serverip, $(element).data("link"), containerID);
+	}else{
+		element.next(".traffic-monitor").html("");
+		clearInterval(chartInterval);
+	}
+});
+
+function plot_UserTraffic(username, serverip, url, targetContainer) {
+	Highcharts.setOptions({
+		global: {
+			useUTC: false
+		}
+	});
+
+	chart = new Highcharts.Chart({
+		chart: {
+			renderTo: targetContainer,
+			animation: Highcharts.svg,
+			events: {
+				load: function () {
+					var count = 0;
+					chartInterval = setInterval(function () {
+						request_TrafficMonitor(username, serverip, url);
+						count++;
+						if(count >= trafficMonitorCounter){
+							clearInterval(chartInterval);
+						}
+					}, trafficMonitorInterval);
+				}
+    		},
+    		height: 250
+     	},
+     	title: {
+    		text: 'Live Traffic Monitoring'
+     	},
+     	exporting: false,
+     	xAxis: {
+    		type: 'datetime',
+    		tickPixelInterval: 150,
+    		maxZoom: maxZoomVal * 1000,
+		},
+		yAxis: {
+    		title: {
+    			text: 'Traffic',
+    			margin: 10
+    		}
+		},
+        plotOptions: {
+            line: {
+            	color:'#2A62A9',
+            	lineWidth: 1,
+            	marker: 0
+            },
+            area: {
+            	color:'rgb(6,209,7)',
+            	lineWidth: 0,
+                fillColor: {
+                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+                    stops: [
+                        [0, 'rgb(6,209,7)'],
+                        [1, 'rgb(6,209,7)']
+                    ]
+                },
+                marker: 0,
+                states: {
+                    hover: {
+                        lineWidth: 1
+                    }
+                }
+            },
+            series: {
+                states: {
+                    hover: {
+                        enabled: false
+                    }
+                }
+            }
+        },
+        series: [{
+            type: 'area',
+            name: 'Download',
+            data: []
+        }, {
+            type: 'line',
+            name: 'Upload',
+            data: []
+        }]
+    });
+}
+
+function request_TrafficMonitor(interfaceid, serverip, url) {
+
+	$.ajax({
+		//url: 'data.php?interface='+interface,
+		url :  url+'?interfaceid='+interfaceid+'&serviceip='+serverip,
+		success: function(data) {
+			var midata = JSON.parse(data);
+			
+			if($('[id^=trafico-]').length == 1){
+				if( midata.length > 0 ) {
+					var TX=parseInt(midata[0].data);
+					var RX=parseInt(midata[1].data);
+					var x = (new Date()).getTime();
+					var shift=chart.series[0].data.length > maxZoomVal - 1;
+					chart.series[0].addPoint([x, TX], true, shift);
+					chart.series[1].addPoint([x, RX], true, shift);
+					document.getElementById("trafico-"+interfaceid).innerHTML= formatBits(TX) + " / " + formatBits(RX);
+				}else{
+					clearInterval(chartInterval);
+					document.getElementById("trafico-"+interfaceid).innerHTML="<h4>--User is offline now--</h4>";
+				}
+			}
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+			console.error("Status: " + textStatus + " request: " + XMLHttpRequest); console.error("Error: " + errorThrown);
+		}
+	});
+}
+
+function formatBits(bytes, precision){
+    var units = ['b', 'Kb', 'Mb', 'Gb', 'Tb'];
+
+	var pow = Math.floor( ( bytes ? Math.log(bytes) : 0 ) / Math.log(1024) );
+	pow = Math.min(pow, units.length-1);
+
+    // Uncomment one of the following alternatives
+    bytes /= Math.pow(1024, pow);
+    // $bytes /= (1 << (10 * $pow));
+
+    var result = bytes.toFixed(2) + ' ' + units[pow];
+    return result;
+//    return number_format($bytes, $precision) . ' ' . $units[$pow];
+}
+
+function jsonConcat(o1, o2) {
+	for (var key in o2) {
+		o1[key] = o2[key];
+	}
+	return o1;
+}
+
+/**
+ * populateSelectBox
+ * input element => HTMLDOMElementReference
+ * input data => JSONData
+ * input text => For First/Zero/Default option
+ */
+function populateSelectBox(element, data, text, text_required){
+	element.empty();
+	if(text_required || data.length > 1){
+		//addOption(element, text, 0);
+		var option = $("<option />");
+		option.attr('value', 0).html(text);
+		element.append(option);
+	}
+	if(data.length > 0){
+		for(var i=0; i<data.length; i++){
+			//addOption(element, data[i][1], data[i][0]);
+			var option = $("<option />");
+    		option.attr('value', data[i][0]).html((data[i][1]));
+    		element.append(option);
+		}
+	}
+}
+
+/* ====== GET LOCATION DATA Starts Here ====== */
+function getRegionCities(){
+	var regionID = $("select[name='region_id'] option:selected").val();
+	var data_element = $("select[name=city_id]");	//document.myform.city_id
+	var text = '-- Select City --';
+	
+    $.ajax({
+		type: 'GET',
+		url: siteurl+'locations/area/list',
+		data: {"region_id":regionID},
+		success: function (response) {
+			if(response){
+				var data = AjaxOutputToArray(response);
+				populateSelectBox(data_element, data, text);
+			}
+			getCitySegments();
+			getResellerList();
+		}
+	});
+}
+
+function getCitySegments(){
+	var cityID = $("select[name='city_id'] option:selected").val();
+	var data_element = $("select[name=segment_id]");	//document.myform.city_id
+	var text = '-- All --';
+	
+	$.ajax({
+		type: 'GET',
+		url: siteurl+'locations/segment?AJAXRequest=true',
+		data: {"city_id":cityID},
+		success: function (response) {
+			var data = response ? AjaxOutputToArray(response) : false;
+			populateSelectBox(data_element, data, text, true);
+			
+			getResellerList();
+		}
+	});
+}
+
+function getDealerCities(){
+	var dealerID = $("select[name='ndealer_id'] option:selected").val();
+	var data_element = $("select[name=city_id]");	//document.myform.city_id
+	var text = '-- Select City --';
+	
+    $.ajax({
+		type: 'GET',
+		url: file_DealerCities,
+		data: {"AJAXRequest":true, "dealer_id":dealerID},
+		success: function (response) {
+			if(response){
+				var data = AjaxOutputToArray(response);
+				populateSelectBox(data_element, data, text);
+			}
+		}
+	});
+}
+
+function getDealerAreas(){
+	var data_element = $("select[name=area_id]");	//document.myform.city_id
+	var text = '-- Select Area --';
+	
+	var jsonData = {};
+	if($("select[name='ndealer_id']").length){
+		var dealerID = { dealer_id: $("select[name='ndealer_id'] option:selected").val() };
+		jsonData = jsonConcat(jsonData, dealerID);
+	}
+	var cityID = { city_id: $("select[name='city_id'] option:selected").val() };
+	jsonData = jsonConcat(jsonData, cityID);
+	
+    $.ajax({
+		type: 'GET',
+		url: file_DealerAreas,
+		data: jsonData,
+		success: function (response) {
+			if(response){
+				var data = AjaxOutputToArray(response);
+				populateSelectBox(data_element, data, text);
+			}
+		}
+	});
+}
+
+$(function(){
+	$(".get-region-cities").on('change', function(){
+		getRegionCities();
+	});
+	
+	$(".get-city-segments").on('change', function(){
+		getCitySegments();
+	});
+	$("#segment_id").on('change', function(){
+		getDealerList();
+	});
+
+	$(".get-dealer-cities").on('change', function(){
+		getDealerCities();
+	});
+	
+	$(".get-dealer-areas").on('change', function(){
+		getDealerAreas();
+	});
+	
+	$(".get-dealer-data").on('change', function(){
+		getDealerCities();
+		getDealerAreas();
+	});
+	$(".get-dealer-list").on('change', function(){
+		getDealerList();
+	});
+});
+/* ====== GET LOCATION DATA Ends Here ====== */
+
+/* ====== GET Reseller Dealer List ====== */
+function getResellerList(){
+	var city_id = $("select[name='city_id'] option:selected").val();
+	var region_id = $("select[name='region_id'] option:selected").val();
+	var data_element = $("select[name=reseller_id]");
+	var text = ' - - All - - ';
+	var url =siteurl+'resellers/getreselerlist';
+	
+	$.ajax({
+		type: 'GET',
+		url: url,
+		data: {"city_id":city_id, "region_id":region_id},
+		success: function (response) {
+			if(response){
+				var data = AjaxOutputToArray(response);
+				populateSelectBox(data_element, data, text);
+			}
+			getDealerList();
+		}
+	});
+}
+function getDealerList(){
+	var city_id = $("select[name='city_id'] option:selected").val();
+	var region_id = $("select[name='region_id'] option:selected").val();
+	var segment_id = $("select[name='segment_id'] option:selected").val();
+	var resellerID = $("select[name='reseller_id'] option:selected").val();
+	var data_element = $("select[name=dealer_id]");
+	var text = ' - - All - - ';
+
+    $.ajax({
+		type: 'GET',
+		url: siteurl+'dealers/getdealerlist',
+		data: {"city_id":city_id, "region_id":region_id,"segment_id":segment_id,"reseller_id":resellerID},
+		success: function (response) {
+			if(response){
+				var data = AjaxOutputToArray(response);
+				populateSelectBox(data_element, data, text);
+			}
+		}
+	});
+}
+
+/* ===== GET Dealer List Ends Here ========= */
+
+$(function(){
+	// ADD * TO ALL LABEL TAGS WHOSE VALUE IS REQUIRED
+	//var all_required_fields = $('input').prop('required');.filter('[required]:visible')
+	var get_required_fields = $('input,textarea,select').filter('[required]');
+	get_required_fields.closest('.form-group').find('.control-label').append(' *');
+});
+
+function resizeDetailDropdown(){
+	var gridview_width = $('.gridview').outerWidth();
+	var container_width = $('.gridview .details > td > div, .gridview .details > td > .detail-responsive').outerWidth();
+	//$('.gridview .details .container').css({'width': gridview_width, 'margin': 0});
+	if (window.matchMedia("(min-width: 768px)").matches) {
+		$('.gridview .details > td > div, .gridview .details > td > .detail-responsive').css({'width': 'initial', 'margin': 0});
+	} else if(window.matchMedia("(max-width: 767px)").matches) {
+		$('.gridview .details > td > div, .gridview .details > td > .detail-responsive').css({'width': gridview_width-15, 'margin': 0});
+	}
+}
+
+$(document).ready(function(){	
+	resizeDetailDropdown();
+
+    $('.cursor').on('click', function(){
+    	resizeDetailDropdown();
+	});
+    
+    $(".autocomplete").on("keyup", function(){
+    	var url			= $(this).data("url")
+    	var param 		= $(this).data("param");
+    	var alter_key	= $(this).data("alter-key");
+    	var hidden_name = $(this).data("hidden");
+    	var element 	= $(this);
+    	var min_length	= $(this).data("min_length") ? $(this).data("min_length") : 3;
+    	
+    	$("[name="+hidden_name+"]").val("");
+    	
+    	var fdata = {};
+    	if(param){
+    		fdata =   $.extend(fdata, convertStringtoAssociativeArray(param));
+    	}
+    	if(alter_key){
+    		fdata =   $.extend(fdata, convertStringtoAssociativeArrayAlterKey(alter_key));
+    	}
+    	
+    	fdata['AJAXRequest']	= true;
+    	fdata['keyword']		= $(this).val();
+    	
+    	console.log($(this).val());
+    	if( $(this).val().length >=  min_length){  		
+    		$(this).autocomplete({
+    			minLength: min_length,
+    			source: function(request, response) {
+    				//console.log(request+" -:-:- "+response);
+    				$.ajax({
+    					url:  url,
+    					data: fdata,
+    					dataType: "json",
+    					type: "GET",
+    					AJAXRequest: true,
+    					 success: function(data){
+    						 console.log("AC Ajax Success");
+    						 response(data);
+    					}
+    				});
+    			},
+    			select: function(event, ui){
+    				console.log("AC Select");						 
+    				//$(this).end().val(ui.item.value);
+    				var value	= ui.item.value;
+    				var id 		= ui.item.id;
+    				if(hidden_name){
+    					if($("[name="+hidden_name+"]").length > 0){
+    						$("[name="+hidden_name+"]").val(id);
+    					}else{
+    						var string = '<input value="' + id + '" name="' + hidden_name + '" type="hidden" />';
+    						$(element).after(string);
+    					}
+    				}
+    			},
+    			open: function( event, ui ) {
+    				$("ul.ui-menu").width($(this).outerWidth()*2);
+    			},
+    		});
+    	}
+    });
+});
+
+$(window).resize(function (){
+	resizeDetailDropdown();
+});
+
+$(function(){
+	$(".option-list").on("change", function(){
+		ajaxSource($(this));
+	});
+});
+
+$(document).on("click", ".ajax-source", function(){
+	ajaxSource($(this));
+});
+
+function ajaxSource(elem){
+	var url			= elem.data("url");
+	var param 		= elem.data("param");
+	var alter_key	= elem.data("alter-key");
+	var method 		= elem.data("function");
+	var container 	= elem.data("container-class");
+	var message		= elem.data("message");
+	var container	= container ? $("."+container) : null;
+	var first_option =  elem.data("first-option");
+	var first_option = first_option ? first_option : ' - - All - - ';
+	var select_value = $(container).data("select-value");
+	var actions_details;
+	if(elem.closest(".actionsdetails").length != 0){
+		actions_details = elem.closest(".actionsdetails").find("."+elem.data("container-class"));
+		if(elem.attr("aria-expanded") == "false") {
+			elem.find('.fa').removeClass("fa-minus").addClass("fa-plus");
+			actions_details.html("");
+			return false;
+		}
+	}
+
+	var fdata = {};
+	if(param){
+		fdata =   $.extend(fdata, convertStringtoAssociativeArray(param));
+	}
+	if(alter_key){
+		fdata =   $.extend(fdata, convertStringtoAssociativeArrayAlterKey(alter_key));
+	}
+	fdata['AJAXRequest']	= true;
+	$.ajax({
+		type: 'GET',
+		url: url,
+		data: fdata,
+		success: function (response){
+			if(container){
+				if($(container).is("select")){
+					var data = AjaxOutputToArray(response);
+					populateSelectBox(container, data, first_option);
+					
+					if(select_value){
+						$(container).val(select_value).trigger("change");
+					}
+				}else if($(container).attr('type') == "text"){
+					$(container).val(response);
+				}else if(response && (actions_details && actions_details.length != 0)){
+					// Condition for Logs in Details component
+					// Remove content if target container is collapsed
+					if(elem.attr("aria-expanded") == "true") {
+						elem.find('.fa').removeClass("fa-plus").addClass("fa-minus");
+						actions_details.html(response);
+					}
+				}else if(response){
+					$(container).html(response);
+				}else{
+					message = message ? message : "Data not Found";
+					$(container).html(message);
+				}
+			}
+			
+			if(method){
+				window[method](response);
+			}
+		}
+	});	
+}
+
+$(document).on("click", ".list-item-detail", function(){
+	var tr = $(this).closest('tr').next('tr');
+	var container = $(tr).find("td:eq(0)");
+	
+	if($(tr).css("display") == "none"){
+		$(tr).css("display", "");
+		var param 	=  $(this).data("param");
+
+		var fdata = {};
+		if(param){
+			fdata =   $.extend({}, convertStringtoAssociativeArray(param));
+		}
+		fdata['AJAXRequest']	= true;
+		
+		var url = $(this).data("url");
+		$.ajax({
+			type: 'GET',
+			url: url,
+			data: fdata,
+			beforeSend: function(){
+				$(container).html("<div class='loading text-center'><img src='"+loadingImage+"'><br />Loading</div>");
+		    },
+		    complete: function(){
+		    	$(container).find(".remove").remove();
+		    },
+			success: function (data) {
+				if(data == 'false'){
+					$(container).html("Data not Founds");
+				}else{
+					$(container).html(data);
+				}
+			}
+		});
+	}else{
+		$(container).html("");
+		$(tr).css("display", "none");
+	}
+});
+
+function convertStringtoAssociativeArray(queryString){
+	if(queryString){
+		var queryArr = queryString.split(','),
+	    queryParams = [];
+	
+		for (var q = 0, qArrLength = queryArr.length; q < qArrLength; q++) {
+			var asign_operator = queryArr[q].search('=') > 0 ? "=" : ":";
+			var qArr = queryArr[q].split(asign_operator);
+			var val =  "";
+			if(typeof qArr[1] === 'undefined'){
+				val	= $("[name="+qArr[0]+"]").val();
+			}else{
+				val = qArr[1];
+			}
+			queryParams[qArr[0]] = val;
+		}
+		return queryParams;
+	}
+}
+function convertStringtoAssociativeArrayAlterKey(queryString){
+	if(queryString){
+		var queryArr = queryString.split(','),
+		queryParams = [];
+		
+		for (var q = 0, qArrLength = queryArr.length; q < qArrLength; q++) {
+			var asign_operator = queryArr[q].search('=') > 0 ? "=" : ":";
+			var qArr = queryArr[q].split(asign_operator);
+			var val	= $("[name="+qArr[0]+"]").val();
+			queryParams[qArr[1]] = val;
+		}
+		return queryParams;
+	}
+}
